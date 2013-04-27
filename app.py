@@ -20,6 +20,9 @@ class Post(object):
 		self.username 	= arg['username']
 		self.date 		= arg['create_ts']
 		self.url 		= arg['url']
+		self.id     	= arg['id']
+		self.points		= arg.get('points')
+
 
 		website_regex = re.compile("(?P<url>https?://[^\s/]+)")
 
@@ -51,7 +54,9 @@ def perform_parse(start):
 	for raw_post in raw_posts:	
 		post = Post(raw_post['item'])
 		posts.append(post)
+
 	return posts
+
 
 class PageLoader(object):
     def index(self, *args, **kwargs):
@@ -66,18 +71,15 @@ class PageLoader(object):
 		start = (page -1) * 10
 		posts = perform_parse(start)
 
+		if  (posts == None) or (len(posts) == 0):
+			return "Error Occured"
+
 		return html.render({
         	'posts' : posts,
         	'page'	: page
         	})
 		
     index.exposed = True
-    def about(self):
-    	return config_file
-    about.exposed = True
-    def parse(self):
-    	return perform_parse()
-    parse.exposed = True
 
 
 config_dict = {
@@ -86,19 +88,19 @@ config_dict = {
 		},
         '/Resources/js': {
           'tools.staticdir.on': True,
-          'tools.staticdir.dir': os.path.join(resources_path, 'js/')
+          'tools.staticdir.dir': 'js/'
           	},
         '/Resources/css': {
           'tools.staticdir.on': True,
-          'tools.staticdir.dir': os.path.join(resources_path, 'css/')
+          'tools.staticdir.dir': 'css/'
         },
         '/Resources/images': {
           'tools.staticdir.on': True,
-          'tools.staticdir.dir': os.path.join(resources_path, 'images/')
+          'tools.staticdir.dir': 'images/'
         },
         '/bootstrap': {
           'tools.staticdir.on': True,
-          'tools.staticdir.dir': os.path.join(resources_path, 'bootstrap/')
+          'tools.staticdir.dir': 'bootstrap/'
         }
       }
 

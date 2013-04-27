@@ -33,6 +33,10 @@
             line-height: 2em;
         }
 
+        .details-row {
+            font-size: 0.8em;
+        }
+
         .pagination-container {
             padding-top: 20px;
             font-size: 1.1em;   
@@ -64,24 +68,25 @@
                 {% if posts.count > 0 %}
                     {% for post in posts %}
                         <div class="container post-container">
-                                <div class="span12" id="post-title">
-                                    {% if post.url == None %}
-                                        {{ post.title }}
-                                    {% else %}
-                                       <a href="{{ post.url }}" target="_blank">{{  post.title }}</a> 
-                                    {% endif %}
-                                </div>
+                            <div class="span12" id="post-title">
+                                {% if post.url == None %}
+                                    {{ post.title }}
+                                {% else %}
+                                    <a href="{{ post.url }}" target="_blank">{{  post.title }}</a> 
+                                {% endif %}
+                            </div>
 
-                                <div class="pull-right">  
-                                    <a href="https://news.ycombinator.com/user?id={{ post.username }}" target="_blank">{{ post.username }}</a> 
-                                </div>
+                            <div class="row details-row pull-right">
+                                <a href="https://news.ycombinator.com/user?id={{ post.username }}" target="_blank">{{ post.username }}</a> -
+                                <a href="https://news.ycombinator.com/item?id={{ post.id }}" target="_blank">Open In HN</a> -
+                                pt : {{ post.points }}
+                            </div>
 
                                 {% if post.desc != None %}
                                     <div>
-                                        
+                                            
                                     </div>
                                 {% endif %}
-
                         </div>
                     {% endfor %}
                 {% endif %}
