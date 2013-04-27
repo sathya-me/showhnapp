@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tasks</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+
+    <title>Show HN</title>
+    </head>
+  <body>
+      
+    <div class="container" id="top_container">  
+        <div class="row-fluid">
+            <div class="span10 offset1" id="main_container">           
+
+                {% if posts.count > 0 %}
+                    {% for post in posts %}
+                        <div class="container">
+                                <div class="span12" id="main_container">
+                                {% if post.url == None %}
+                                    {{ post.title }}
+                                {% else %}
+                                   <a href="{{ post.url }}" target="_blank">{{  post.title }}</a> 
+                                {% endif %}
+                                </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+            </div>  <!-- main_container -->
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>
+                Made in India using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>, <a href="http://brackets.io/">Brackets</a>.
+            </p>
+        </div>
+    </footer> 
+                 
+    <script src="Resources/js/jquery-1.9.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="Resources/js/showhn.js"></script>
+
+  </body>
+</html>
