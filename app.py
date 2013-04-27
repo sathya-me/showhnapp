@@ -7,6 +7,7 @@ import re
 
 template_dir = os.path.join(os.path.dirname(__file__), 'Templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
+resources_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Resources/')
 
 api_url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?q=show+hn&type=submission&sortby=create_ts+desc&pretty_print=true"
 
@@ -46,36 +47,6 @@ def perform_parse():
 		posts.append(post)
 	return posts
 
-
-
-
-resources_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Resources/')
-
-config_dict = {
-        '/': {
-        'tools.staticdir.root': resources_path, 
-        'tools.staticdir.debug': True,
-		'log.screen': True 
-		},
-        '/Resources/js': {
-          'tools.staticfile.on': True,
-          'tools.staticfile.filename': os.path.join(resources_path, 'js/')
-          	},
-        '/Resources/css': {
-          'tools.staticfile.on': True,
-          'tools.staticfile.filename': os.path.join(resources_path, 'css/')
-        },
-        '/Resources/images': {
-          'tools.staticfile.on': True,
-          'tools.staticfile.filename': os.path.join(resources_path, 'images/')
-        },
-        '/bootstrap': {
-          'tools.staticfile.on': True,
-          'tools.staticfile.filename': os.path.join(resources_path, 'bootstrap/')
-        }
-      }
-
-
 class PageLoader(object):
     def index(self):
     	html = jinja_env.get_template('index.html')
@@ -87,8 +58,30 @@ class PageLoader(object):
     about.exposed = True
     def parse(self):
     	return perform_parse()
-    def conf(self):
-    	return str(config_dict)
-    conf.exposed = True
+    parse.exposed = True
+
+
+config_dict = {
+        '/': {
+        'tools.staticdir.root': resources_path, 
+		},
+        '/Resources/js': {
+          'tools.staticdir.on': True,
+          'tools.staticdir.dir': os.path.join(resources_path, 'js/')
+          	},
+        '/Resources/css': {
+          'tools.staticdir.on': True,
+          'tools.staticdir.dir': os.path.join(resources_path, 'css/')
+        },
+        '/Resources/images': {
+          'tools.staticdir.on': True,
+          'tools.staticdir.dir': os.path.join(resources_path, 'images/')
+        },
+        '/bootstrap': {
+          'tools.staticdir.on': True,
+          'tools.staticdir.dir': os.path.join(resources_path, 'bootstrap/')
+        }
+      }
+
 
 cherrypy.quickstart(PageLoader(), config = config_dict)
