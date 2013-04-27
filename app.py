@@ -9,9 +9,7 @@ template_dir = os.path.join(os.path.dirname(__file__), 'Templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 resources_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Resources/')
 
-api_url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?q=show+hn&type=submission&sortby=create_ts+desc&pretty_print=true"
-
-#config_file = os.path.join(os.path.dirname(__file__), 'dev.conf')
+api_url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][type]=submission&filter[fields][title]=show+hn&sortby=create_ts+desc&start="
 
 class Post(object):
 	"""docstring for Post"""
@@ -23,20 +21,28 @@ class Post(object):
 		self.date 		= arg['create_ts']
 		self.url 		= arg['url']
 
+		website_regex = re.compile("(?P<url>https?://[^\s/]+)")
+
 		if self.url == None:
-			regex = re.compile("(?P<url>https?://[^\s]+)")
-			url   =  re.search(regex ,self.desc)
+			
+			url   =  re.search(website_regex ,self.desc)
 			if url != None:
 				self.url = url.group("url")
 
-def parsePage():
-	response 	= urllib2.urlopen(api_url)
+		if (self.title == None) and (arg['discussion']['title'] != ""):
+			self.title = arg['discussion']['title']
+
+		if (self.title == None) and (self.url != None):
+			self.title = self.url
+
+def parsePage(start):
+	response 	= urllib2.urlopen(api_url + str(start))
 	html 		= response.read()
 	jsonData  		= simplejson.loads(html)
 	return jsonData
 
-def perform_parse():
-	raw_posts  = parsePage()['results']
+def perform_parse(start):
+	raw_posts  = parsePage(start)['results']
 
 	if raw_posts == []: 
 		return 'No Projects Found'
@@ -48,10 +54,23 @@ def perform_parse():
 	return posts
 
 class PageLoader(object):
-    def index(self):
-    	html = jinja_env.get_template('index.html')
-    	posts = perform_parse()
-        return html.render({'posts' : posts})
+    def index(self, *args, **kwargs):
+		html = jinja_env.get_template('index.html')
+		page = 1
+		if len(kwargs) > 0:
+			try:
+				page = int(kwargs.get('page', 1))
+			except Exception, e:
+				page = 1
+
+		start = (page -1) * 10
+		posts = perform_parse(start)
+
+		return html.render({
+        	'posts' : posts,
+        	'page'	: page
+        	})
+		
     index.exposed = True
     def about(self):
     	return config_file

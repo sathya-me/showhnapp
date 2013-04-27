@@ -8,36 +8,84 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
 
     <title>Show HN</title>
+
+    <style>
+        
+        body {
+            width: 100%;
+            height : 100%;
+        }
+
+        #top_container {
+            padding-top: 40px;
+        }
+
+        .main_container {
+            
+        }
+
+        .fix_bottom {
+            position: fixed; 
+            bottom: 10px;
+            width: 100%;
+        }
+
+    </style>
+
     </head>
   <body>
-      
+    <div class="navbar navbar-fixed-top">   
+        <div class="navbar-inner">
+            <div class="container">
+                <ul class="nav">
+                    <li><a class="brand" href="/">Show HN</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
     <div class="container" id="top_container">  
-        <div class="row-fluid">
-            <div class="span10 offset1" id="main_container">           
+            <div class="span8 offset2" id="main_container">           
 
                 {% if posts.count > 0 %}
                     {% for post in posts %}
                         <div class="container">
-                                <div class="span12" id="main_container">
+                                <div class="span12">
                                 {% if post.url == None %}
                                     {{ post.title }}
                                 {% else %}
                                    <a href="{{ post.url }}" target="_blank">{{  post.title }}</a> 
                                 {% endif %}
+
                                 </div>
                         </div>
                     {% endfor %}
                 {% endif %}
 
+                <div class="container">
+                    <div class="span6">
+                        {% if page > 1 %}
+                            <a href="?page={{ page - 1 }}"><<< Previous</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="span6 pull-right">
+                        <a href="?page={{ page + 1 }}">Next >>></a>
+                    </div>
+                </div>
+
             </div>  <!-- main_container -->
-        </div>
     </div>
 
-    <footer class="footer">
+    <footer class="footer fix_bottom">
         <div class="container">
-            <p>
-                Made in India using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>, <a href="http://brackets.io/">Brackets</a>.
-            </p>
+            <div class="row-fluid">
+                <div class="span10 offset1" id="main_container">
+                    <p style="text-align:center">
+                        Made in India by <a href="https://twitter.com/sathyaio" target="_blank">@sathyaio</a>.
+                    </p>
+                <div class="span10 offset1" id="main_container">
+            </div>
         </div>
     </footer> 
                  
