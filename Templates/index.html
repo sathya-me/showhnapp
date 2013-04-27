@@ -20,8 +20,22 @@
             padding-top: 40px;
         }
 
-        .main_container {
-            
+        #main_container {
+            padding-top: 20px;
+        }
+
+
+        #post-title {
+            font-size: 1.3em;   
+        }
+
+        .post-container {
+            line-height: 2em;
+        }
+
+        .pagination-container {
+            padding-top: 20px;
+            font-size: 1.1em;   
         }
 
         .fix_bottom {
@@ -45,32 +59,40 @@
     </div>
 
     <div class="container" id="top_container">  
-            <div class="span8 offset2" id="main_container">           
+            <div class="span12" id="main_container">           
 
                 {% if posts.count > 0 %}
                     {% for post in posts %}
-                        <div class="container">
-                                <div class="span12">
-                                {% if post.url == None %}
-                                    {{ post.title }}
-                                {% else %}
-                                   <a href="{{ post.url }}" target="_blank">{{  post.title }}</a> 
+                        <div class="container post-container">
+                                <div class="span12" id="post-title">
+                                    {% if post.url == None %}
+                                        {{ post.title }}
+                                    {% else %}
+                                       <a href="{{ post.url }}" target="_blank">{{  post.title }}</a> 
+                                    {% endif %}
+                                </div>
+
+                                <div class="pull-right">  
+                                    <a href="https://news.ycombinator.com/user?id={{ post.username }}" target="_blank">{{ post.username }}</a> 
+                                </div>
+
+                                {% if post.desc != None %}
+                                    <div>
+                                        
+                                    </div>
                                 {% endif %}
 
-                                </div>
                         </div>
                     {% endfor %}
                 {% endif %}
 
-                <div class="container">
-                    <div class="span6">
+                <div class="container pagination-container">
+                    <div class="span12">
                         {% if page > 1 %}
                             <a href="?page={{ page - 1 }}"><<< Previous</a>
                         {% endif %}
-                    </div>
 
-                    <div class="span6 pull-right">
-                        <a href="?page={{ page + 1 }}">Next >>></a>
+                        <a href="?page={{ page + 1 }}" class="pull-right">Next >>></a>
                     </div>
                 </div>
 
