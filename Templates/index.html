@@ -48,6 +48,34 @@
             width: 100%;
         }
 
+
+        .details-row span {
+            background-color: #fff;
+        }
+
+        .details-row #openinhn,#points {
+            width: 80px;
+            text-align: center;
+        }
+
+        .details-row #username {
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .details-row span, span a {
+            color: #04BF9D;
+        }
+        
+        .details-row a {
+            text-decoration: none;
+        }
+
+        .details-row a:hover {
+            color: #00A19A;
+        }
+
+
     </style>
 
     </head>
@@ -87,9 +115,15 @@
                             </div>
 
                             <div class="row details-row pull-right">
-                                <a href="https://news.ycombinator.com/user?id={{ post.username }}" target="_blank">{{ post.username }}</a> -
-                                <a href="https://news.ycombinator.com/item?id={{ post.id }}" target="_blank">Open In HN</a> -
-                                pt : {{ post.points }}
+                                <span class="label" id="username">
+                                    <a href="https://news.ycombinator.com/user?id={{ post.username }}" target="_blank">{{ post.username }}</a>
+                                </span>
+                                <span class="label" id="openinhn">
+                                    <a href="https://news.ycombinator.com/item?id={{ post.id }}" target="_blank">Open In HN</a>
+                                </span>
+                                <span class="label" id="points">
+                                    {{ post.points }}
+                                </span>
                             </div>
 
                                 {% if post.desc != None %}
