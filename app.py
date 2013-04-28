@@ -81,6 +81,11 @@ class PageLoader(object):
 		
     index.exposed = True
 
+    def default(self, attr='abc',  *args, **kwargs):
+		cherrypy.response.status = 404
+		html = jinja_env.get_template('404.html')
+		return html.render()
+    default.exposed = True
 
 config_dict = {
         '/': {
