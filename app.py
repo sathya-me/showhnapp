@@ -9,7 +9,7 @@ template_dir = os.path.join(os.path.dirname(__file__), 'Templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
 resources_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Resources/')
 
-api_url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][type]=submission&filter[fields][title]=show+hn&sortby=create_ts+desc&start="
+api_url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][type]=submission&filter[fields][title]=show+hn&sortby=%s+desc&start=%s"
 
 class Post(object):
 	"""docstring for Post"""
@@ -38,14 +38,22 @@ class Post(object):
 		if (self.title == None) and (self.url != None):
 			self.title = self.url
 
-def parsePage(start):
-	response 	= urllib2.urlopen(api_url + str(start))
+def parsePage(start, filter):
+
+	try:
+		filter = int(filter)
+	except Exception, e:
+		filter = 1
+
+	filters = ["score", "create_ts", "points"]
+	filter_to_use = filters[filter-1]
+	response 	= urllib2.urlopen(api_url % (filter_to_use, str(start)))
 	html 		= response.read()
-	jsonData  		= simplejson.loads(html)
+	jsonData  	= simplejson.loads(html)
 	return jsonData
 
-def perform_parse(start):
-	raw_posts  = parsePage(start)['results']
+def perform_parse(start, filter):
+	raw_posts  = parsePage(start, filter)['results']
 
 	if raw_posts == []: 
 		return 'No Projects Found'
@@ -68,15 +76,26 @@ class PageLoader(object):
 			except Exception, e:
 				page = 1
 
+		post_filter = 1
+		if len(kwargs) > 0:
+			try:
+				post_filter = int(kwargs.get('filter', 1))
+			except Exception, e:
+				post_filter = 1
+
+		if (post_filter < 1) or (post_filter > 3):
+			post_filter = 1
+
 		start = (page -1) * 10
-		posts = perform_parse(start)
+		posts = perform_parse(start, post_filter)
 
 		if  (posts == None) or (len(posts) == 0):
 			return "Error Occured"
 
 		return html.render({
         	'posts' : posts,
-        	'page'	: page
+        	'page'	: page,
+        	'filter': post_filter
         	})
 		
     index.exposed = True

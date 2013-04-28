@@ -58,11 +58,21 @@
                 <ul class="nav">
                     <li><a class="brand" href="/">Show HN</a></li>
                 </ul>
+                <div class="pull-right">
+                    <div class="btn-group" data-toggle="buttons-radio">
+                        <button class="btn btn-inverse .disabled" disabled="disabled">Filter :</button>
+                        <button class="btn {% if filter == 1 %}  active {% endif %}" onclick="window.open('/?filter=1&page=1', '_self')">Relevance</button>
+                        <button class="btn {% if filter == 2 %}  active {% endif %}" onclick="window.open('/?filter=2&page=1', '_self')">Date</button>
+                        <button class="btn {% if filter == 3 %}  active {% endif %}" onclick="window.open('/?filter=3&page=1', '_self')">Points</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
+
     <div class="container" id="top_container">  
+
             <div class="span12" id="main_container">           
 
                 {% if posts.count > 0 %}
@@ -92,15 +102,20 @@
                 {% endif %}
 
                 <div class="container pagination-container">
-                    <div class="span12">
-                        {% if page > 1 %}
-                            <a href="?page={{ page - 1 }}"><<< Previous</a>
-                        {% endif %}
-
-                        <a href="?page={{ page + 1 }}" class="pull-right">Next >>></a>
-                    </div>
+                    <ul class="pager">
+                            {% if page > 1 %}
+                                <li class="previous">
+                                <a href="?page={{ page - 1 }}">Previous</a>
+                            {% else %}
+                                <li class="previous disabled">
+                                <a href="?filter={{filter}}&page={{page}}" onclick="return false;"><<< Previous</a>
+                            {% endif %} 
+                        </li>
+                      <li class="next">
+                            <a href="?filter={{filter}}&page={{ page + 1 }}" class="pull-right">Next >>></a>
+                      </li>
+                    </ul>
                 </div>
-
             </div>  <!-- main_container -->
     </div>
 
