@@ -11,6 +11,8 @@ resources_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Resou
 
 api_url = "http://api.thriftdb.com/api.hnsearch.com/items/_search?filter[fields][type]=submission&filter[fields][title]=show+hn&sortby=%s+desc&start=%s"
 
+api_max_page = 100
+
 class Post(object):
 	"""docstring for Post"""
 	def __init__(self, arg):
@@ -75,6 +77,9 @@ class PageLoader(object):
 				page = int(kwargs.get('page', 1))
 			except Exception, e:
 				page = 1
+
+		if page > 100:
+			page = api_max_page
 
 		post_filter = 1
 		if len(kwargs) > 0:
