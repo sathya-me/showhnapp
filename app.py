@@ -4,6 +4,7 @@ import os
 from django.utils import simplejson
 import urllib2
 import re
+import newrelic.agent
 
 template_dir = os.path.join(os.path.dirname(__file__), 'Templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape=True)
@@ -133,6 +134,7 @@ config_dict = {
         }
       }
 
+newrelic.agent.initialize(os.path.join(os.path.dirname(resources_path), 'others/newrelic.ini'))
 
 cherrypy.config.update({'server.socket_host': '0.0.0.0',})
 cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '5000')),})
