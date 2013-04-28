@@ -138,4 +138,7 @@ newrelic.agent.initialize(os.path.join(os.path.dirname(resources_path), 'others/
 
 cherrypy.config.update({'server.socket_host': '0.0.0.0',})
 cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '5000')),})
+
+#cherrypy.config.update({'server.socket_host': '192.168.1.3',})
+#cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '6677')),})
 cherrypy.quickstart(PageLoader(), config = config_dict)
