@@ -22,6 +22,8 @@
                 "text": "I'm the author of Redis in Action, and over the last couple weeks whenever I've had some spare time, I've been working on a few side-projects (I know others exist, but I don't like the way they are structured or the way they work). One of them required that I build an object-Redis mapper for Python. When I started to want to use it in another project, I decided it was time to polish it up and release it.<p>Github: https://github.com/josiahcarlson/rom\nPypi: https://pypi.python.org/pypi/rom\nDocs: http://pythonhosted.org/rom<p>I've got to head to the office in a few minutes, but I'll be happy to answer any questions when I get in.",
                 "title": "Show HN: Redis object mapper for Python",
                 "type": "submission",
+                8421
+
                 "url": null,
                 "username": "DrJosiah"
             },
@@ -29,5 +31,3 @@
         }
 
 */
-
-var post = new Post;
