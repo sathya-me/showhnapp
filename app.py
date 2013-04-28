@@ -31,7 +31,11 @@ class Post(object):
 
 		if self.url == None:
 			
-			url   =  re.search(website_regex ,self.desc)
+			try:
+				url   =  re.search(website_regex ,self.desc)
+			except Exception, e:
+				url = None
+			
 			if url != None:
 				self.url = url.group("url")
 
