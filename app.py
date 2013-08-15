@@ -30,12 +30,12 @@ class Post(object):
 		website_regex = re.compile("(?P<url>https?://[^\s/]+)")
 
 		if self.url == None:
-			
+
 			try:
 				url   =  re.search(website_regex ,self.desc)
 			except Exception, e:
 				url = None
-			
+
 			if url != None:
 				self.url = url.group("url")
 
@@ -62,11 +62,11 @@ def parsePage(start, filter):
 def perform_parse(start, filter):
 	raw_posts  = parsePage(start, filter)['results']
 
-	if raw_posts == []: 
+	if raw_posts == []:
 		return 'No Projects Found'
 
 	posts = []
-	for raw_post in raw_posts:	
+	for raw_post in raw_posts:
 		post = Post(raw_post['item'])
 		posts.append(post)
 
@@ -86,15 +86,15 @@ class PageLoader(object):
 		if page > 100:
 			page = api_max_page
 
-		post_filter = 1
+		post_filter = 2
 		if len(kwargs) > 0:
 			try:
-				post_filter = int(kwargs.get('filter', 1))
+				post_filter = int(kwargs.get('filter', 2))
 			except Exception, e:
-				post_filter = 1
+				post_filter = 2
 
 		if (post_filter < 1) or (post_filter > 3):
-			post_filter = 1
+			post_filter = 2
 
 		start = (page -1) * 10
 		posts = perform_parse(start, post_filter)
@@ -107,7 +107,7 @@ class PageLoader(object):
         	'page'	: page,
         	'filter': post_filter
         	})
-		
+
     index.exposed = True
 
     def default(self, attr='abc',  *args, **kwargs):
@@ -118,7 +118,7 @@ class PageLoader(object):
 
 config_dict = {
         '/': {
-        'tools.staticdir.root': resources_path, 
+        'tools.staticdir.root': resources_path,
 		},
         '/Resources/js': {
           'tools.staticdir.on': True,
